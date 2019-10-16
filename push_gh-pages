@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+until [[ "$REPLY" =~ ^[yn]$ ]]
+do
+    echo
+    echo "push gh-pages brach? [yn]"
+    read -p "?" -n 1 -r
+done
+echo
+
+
+if [[ $REPLY =~ y ]]
+then
+    cd _site
+    git init
+    git remote add origin $1
+    git checkout -b gh-pages
+
+    touch .nojekyll
+    touch .gitignore
+    echo ".DS_Store" >> .gitignore
+    echo "Icon?" >> .gitignore
+    git add .gitignore
+    git add -A
+    git commit -m "Updated html pages"
+    git push -f origin gh-pages
+
+fi
+
+

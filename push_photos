@@ -1,0 +1,37 @@
+#!/bin/bash -e
+
+until [[ "$REPLY" =~ ^[yn]$ ]]
+do
+    echo
+    echo "push photos brach? [yn]"
+    read -p "?" -n 1 -r
+done
+echo
+
+
+if [[ $REPLY =~ n ]]
+then
+    exit
+fi
+
+
+cd photos
+
+
+if [ ! -d ".git" ]
+then
+    git init
+    git remote add origin $1
+    git checkout -b photos
+    touch .gitignore
+    echo ".DS_Store" >> .gitignore
+    echo "Icon*" >> .gitignore
+    git add .gitignore
+fi
+
+
+git add -A
+git commit -m "Updated photos"
+git push -f origin master
+
+
