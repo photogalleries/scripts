@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+
+DST=$1
+
+
+# incremental or full build?
+until [[ "$REPLY" =~ ^[1-2]$ ]]
+do
+    echo
+    echo "Use incremental or full build?"
+    echo "1) incremental"
+    echo "2) full"
+    read -p "?" -n 1 -r
+done
+echo
+
+
+if [[ $REPLY =~ 1 ]]
+then
+    mkdir -p $DST
+
+elif [[ $REPLY =~ 2 ]]
+then
+    rm -rf $DST
+    mkdir -p $DST
+
+fi
+

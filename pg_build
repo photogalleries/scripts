@@ -1,0 +1,39 @@
+#!/bin/bash -e
+
+
+REMOTE=$1
+
+
+# local or remote links?
+until [[ "$REPLY" =~ ^[1-2]$ ]]
+do
+    echo
+    echo "Use local or remote links?"
+    echo "1) local"
+    echo "2) remote"
+    read -p "?" -n 1 -r
+done
+echo
+
+
+# prepare templates
+if [[ $REPLY =~ 1 ]]
+then
+    cp _layouts/{_,}gallery_page.html
+
+elif [[ $REPLY =~ 2 ]]
+then
+    cp _layouts/{_,}gallery_page.html
+
+    OLD='href="{{ image.name }}" rel="{{ page.gallery }}"'
+    NEW="href=\"$REMOTE/tree/photos/{{ page.gallery }}/{{ image.name }}\""
+    sed -i '' -e "s;$OLD;$NEW;" _layouts/gallery_page.html
+
+fi
+
+
+# build html
+rm -rf _site
+bundle exec jekyll build
+
+
